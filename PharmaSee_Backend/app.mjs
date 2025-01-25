@@ -25,7 +25,7 @@ await mongoose.connect(process.env.MONG_URI)
 
 // GENERAL ROUTES
 app.get('/api/register', (req, res) => {
-
+    
 });
 
 app.get('/api/login', (req, res) => {
