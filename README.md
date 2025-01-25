@@ -2,13 +2,13 @@
 
 ## Inspiration
 
-The inspiration behind **PharmaSee** stems from the alarming rate of medication prescription errors, which range from **8% to 25%** annually. These errors can lead to severe health complications and even fatalities. Our goal with **PharmaSee** is to bridge the communication gap between doctors, pharmacies, and patients by leveraging technology to ensure medication accuracy and adherence.
+The inspiration behind **PharmaSee** stems from the alarming rate of medication prescription errors, up to **25%** annually. These errors can lead to severe health complications and even fatalities. Our goal with **PharmaSee** is to bridge the communication gap between doctors, pharmacies, and patients by leveraging technology to ensure medication accuracy and adherence.
 
 ## What PharmaSee Does
 
 **PharmaSee** is a comprehensive medication management system that:
 
-- **Secure Prescription:** Allows doctors to securely prescribe medications and store them in a database.
+- **Secure Prescription:** Allows doctors to securely prescribe medications and store them in a MongoDB.
 - **Verification:** Enables patients to scan their pill bottles using a camera to verify prescription details.
 - **AI-Powered Insights:** Uses AI to provide easy-to-understand explanations of medication purposes.
 - **Language Support:** Supports translations in **English, Chinese, and Spanish** to enhance accessibility.
