@@ -10,7 +10,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 export default function SignUpForm() {
   const [formData, setFormData] = useState({
+<<<<<<< Updated upstream
     username: "",
+=======
+    fullName: "",
+    password: "",
+>>>>>>> Stashed changes
     email: "",
     password: "",
     confirmPassword: "",
@@ -40,7 +45,11 @@ export default function SignUpForm() {
     setSuccess(false)
 
     // Basic validation
+<<<<<<< Updated upstream
     if (!formData.username || !formData.email || !formData.password || !formData.confirmPassword || !formData.role) {
+=======
+    if (!formData.fullName || !formData.email || !formData.password || !formData.age || !formData.role) {
+>>>>>>> Stashed changes
       setError("All fields are required")
       return
     }
@@ -50,14 +59,34 @@ export default function SignUpForm() {
       return
     }
 
+    // AJAX Request
     try {
-      // Here you would typically send the form data to your backend API
-      // For this example, we'll just simulate a successful signup
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+      }
+      console.log(formData);
+
+
+
       await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate API call
       setSuccess(true)
       // Reset form after successful submission
       setFormData({
+<<<<<<< Updated upstream
         username: "",
+=======
+        fullName: "",
+        password: "",
+>>>>>>> Stashed changes
         email: "",
         password: "",
         confirmPassword: "",
@@ -79,10 +108,15 @@ export default function SignUpForm() {
           <div className="space-y-2">
             <Label htmlFor="username">Username</Label>
             <Input
+<<<<<<< Updated upstream
               id="username"
               name="username"
+=======
+              id="fullName"
+              name="fullName"
+>>>>>>> Stashed changes
               type="text"
-              value={formData.username}
+              value={formData.fullName}
               onChange={handleChange}
               required
             />
@@ -117,10 +151,17 @@ export default function SignUpForm() {
           <div className="space-y-2">
             <Label htmlFor="confirmPassword">Confirm Password</Label>
             <Input
+<<<<<<< Updated upstream
               id="confirmPassword"
               name="confirmPassword"
               type="password"
               value={formData.confirmPassword}
+=======
+              id="age"
+              name="age"
+              type="text"
+              value={formData.age}
+>>>>>>> Stashed changes
               onChange={handleChange}
               required
             />

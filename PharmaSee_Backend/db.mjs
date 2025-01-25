@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 // patient ID not needed (done by mongoose)
 const patientSchema = new mongoose.Schema({
     fullName: { type: String, required: true},
+    password: { type: String, required: true},
     email: { type: String, required: true},
     age: { type: Number, required : true},
     medication: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Medication' }]
@@ -18,6 +19,7 @@ const medicationSchema = new mongoose.Schema({
 
 const doctorSchema = new mongoose.Schema({
     fullName: { type: String, required: true},
+    password: { type: String, required: true},
     email: { type: String, required: true},
     age: { type: Number, required : true},
     patients: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Patient' }]
