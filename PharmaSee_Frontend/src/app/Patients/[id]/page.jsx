@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { ArrowLeft } from "lucide-react"
-
+import Autocomplete from "@/components/Autocomplete"
 // Mock data for patients and their medications
 const mockPatients = [
   {
@@ -123,6 +123,9 @@ export default function PatientDetails() {
             </ul>
           </CardContent>
         </Card>
+        <div className="mb-8">
+          <Autocomplete />
+        </div>
       </div>
     </div>
   )

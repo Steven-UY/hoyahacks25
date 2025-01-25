@@ -1,5 +1,5 @@
 "use client"
-
+import Autocomplete from "@/components/Autocomplete"
 import { Avatar } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -53,6 +53,13 @@ export default function DoctorDashboard() {
             <p className="text-muted-foreground">Manage your patients below.</p>
           </div>
 
+
+          {/* Autocomplete Card */}
+          {/* <div className="mb-8">
+            <Autocomplete />
+          </div> */}
+
+          
           {/* Patients Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {mockPatients.map((patient) => (
@@ -70,6 +77,7 @@ export default function DoctorDashboard() {
                     </div>
                   </CardContent>
                 </Card>
+
               </Link>
             ))}
           </div>

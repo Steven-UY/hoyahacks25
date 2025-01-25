@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Autocomplete Search</title>
+    <style>
+        /* Add your CSS styles here */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #0a192f;
+    color: #ccd6f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    max-width: 600px;
+    width: 100%;
+    background: #112240;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease-in-out;
+}
+
+h2 {
+    text-align: center;
+    color: #64ffda;
+    font-size: 28px;
+    transition: all 0.3s ease-in-out;
+}
+
+.autocomplete-container {
+    position: relative;
+}
+
+.autocomplete-input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #64ffda;
+    border-radius: 8px;
+    font-size: 18px;
+    background: #0a192f;
+    color: #ccd6f6;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.autocomplete-input:focus {
+    border-color: #0077b6;
+}
+
+.autocomplete-items {
+    position: absolute;
+    width: 100%;
+    background: #112240;
+    border: 1px solid #64ffda;
+    max-height: 200px;
+    overflow-y: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    display: none;
+}
+
+.autocomplete-items div {
+    padding: 12px;
+    cursor: pointer;
+    color: #ccd6f6;
+    font-size: 16px;
+    border-bottom: 1px solid #64ffda;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.autocomplete-items div:hover {
+    background-color: #0077b6;
+    color: #ffffff;
+}
+
+.pill-details {
+    font-size: 18px;
+    background: #112240;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border-left: 4px solid #64ffda;
+    color: #64ffda;
+    transition: all 0.3s ease-in-out;
+}
+
+.pill-actions button {
+    margin-left: 5px;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.edit-btn {
+    background-color: #28a745;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+}
+
+.edit-btn:hover {
+    background-color: #218838;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #112240;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    border: 2px solid #64ffda;
+    display: none;
+    width: 400px;
+}
+
+.popup input, .popup button {
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px;
+    border: 1px solid #64ffda;
+    border-radius: 8px;
+    font-size: 16px;
+    background: #0a192f;
+    color: #ccd6f6;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.popup input:focus {
+    border-color: #0077b6;
+}
+
+.popup button {
+    background: #0077b6;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.popup button:hover {
+    background: #0056b3;
+}
+
+.popup .cancel-btn {
+    background: #dc3545;
+}
+
+.popup .cancel-btn:hover {
+    background: #c82333;
+}
+.download-btn {
+    margin-top: 20px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #64ffda;
+    color: #0a192f;
+    transition: background-color 0.3s ease-in-out;
+    width: 100%;
+}
+
+.download-btn:hover {
+    background-color: #0077b6;
+    color: white;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Medicine Autocomplete Search</h2>
+        <div class="autocomplete-container">
+            <input type="text" id="medicineInput" class="autocomplete-input" placeholder="Start typing medicine name..." autocomplete="off">
+            <div id="suggestions" class="autocomplete-items"></div>
+        </div>
+        <div id="selected-medicines-list"></div>
+        <button onclick="downloadJSON()" class="download-btn">Download JSON</button>
+    </div>
+    
+
+    <div class="popup" id="medicinePopup">
+        <h3 id="popupTitle">Enter Medicine Details</h3>
+        <input type="text" id="medicineName" readonly>
+        <input type="text" id="dosage" placeholder="Dosage (e.g. 500mg)">
+        <input type="text" id="frequency" placeholder="Frequency (e.g. Twice a day)">
+        <input type="number" id="count" placeholder="Count (e.g. 30)">
+        <button onclick="saveMedicine()">Add Medicine</button>
+        <button class="cancel-btn" onclick="cancelPopup()">Cancel</button>
+    </div>
+    
+    <script>
+        let selectedMedicines = [];
+        let editingIndex = null;
+
+        document.getElementById('medicineInput').addEventListener('input', function() {
+            let query = this.value.trim();
+            if (query.length < 1) {
+                document.getElementById('suggestions').style.display = 'none';
+                return;
+            }
+
+            fetch(`/autocomplete?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    let suggestions = document.getElementById('suggestions');
+                    suggestions.innerHTML = '';
+                    suggestions.style.display = 'block';
+                    data.forEach(medicine => {
+                        let item = document.createElement('div');
+                        item.textContent = medicine;
+                        item.onclick = function() {
+                            showPopup(medicine);
+                        };
+                        suggestions.appendChild(item);
+                    });
+                })
+                .catch(error => console.error('Error fetching autocomplete:', error));
+        });
+
+        function showPopup(medicine, index = null) {
+            document.getElementById('medicinePopup').style.display = 'block';
+            document.getElementById('medicineName').value = medicine;
+            document.getElementById('medicineInput').value = '';
+            document.getElementById('suggestions').style.display = 'none';
+
+            if (index !== null) {
+                document.getElementById('popupTitle').textContent = 'Edit Medicine Details';
+                document.getElementById('dosage').value = selectedMedicines[index].dosage;
+                document.getElementById('frequency').value = selectedMedicines[index].frequency;
+                document.getElementById('count').value = selectedMedicines[index].count;
+                editingIndex = index;
+            } else {
+                document.getElementById('popupTitle').textContent = 'Enter Medicine Details';
+                document.getElementById('dosage').value = '';
+                document.getElementById('frequency').value = '';
+                document.getElementById('count').value = '';
+                editingIndex = null;
+            }
+        }
+        function downloadJSON() {
+            if (selectedMedicines.length === 0) {
+                alert('No medicines added to download.');
+                return;
+            }
+
+            const dataStr = JSON.stringify(selectedMedicines, null, 2);
+            const blob = new Blob([dataStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "medicines.json";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function saveMedicine() {
+            let medicine = document.getElementById('medicineName').value;
+            let dosage = document.getElementById('dosage').value;
+            let frequency = document.getElementById('frequency').value;
+            let count = document.getElementById('count').value;
+
+            if (dosage && frequency && count) {
+                if (editingIndex !== null) {
+                    selectedMedicines[editingIndex] = { medicine, dosage, frequency, count };
+                } else {
+                    selectedMedicines.push({ medicine, dosage, frequency, count });
+                }
+                renderMedicineList();
+                cancelPopup();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+
+        function cancelPopup() {
+            document.getElementById('medicinePopup').style.display = 'none';
+        }
+
+        function renderMedicineList() {
+            let list = document.getElementById('selected-medicines-list');
+            list.innerHTML = '';
+            selectedMedicines.forEach((med, index) => {
+                list.innerHTML += `<div class="pill-details">
+                    <b>#${med.medicine}</b> - ${med.dosage}, ${med.frequency}, Count: ${med.count}
+                    <div class="pill-actions">
+                        <button class="edit-btn" onclick="showPopup('${med.medicine}', ${index})">Edit</button>
+                        <button class="delete-btn" onclick="removeMedicine(${index})">Delete</button>
+                    </div>
+                </div>`;
+            });
+        }
+
+        function removeMedicine(index) {
+            selectedMedicines.splice(index, 1);
+            renderMedicineList();
+        }
+    </script>
+</body>
+</html>
