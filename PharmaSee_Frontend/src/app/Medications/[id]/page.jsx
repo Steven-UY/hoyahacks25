@@ -8,21 +8,21 @@ import { ArrowLeft } from "lucide-react"
 // Mock data for medications
 const mockMedications = [
   {
-    id: 1,
+    id: 0,
     name: "Medication 1",
     dosage: "20mg",
     frequency: "Daily",
     description: "Used to treat high blood pressure.",
   },
   {
-    id: 2,
+    id: 1,
     name: "Medication 2",
     dosage: "10mg",
     frequency: "Twice daily",
     description: "An antibiotic for bacterial infections.",
   },
   {
-    id: 3,
+    id: 2,
     name: "Medication 3",
     dosage: "5mg",
     frequency: "As needed",
