@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export default function SignUpForm() {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ export default function SignUpForm() {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "", // Add this line
   })
   const [error, setError] = useState("")
   const [success, setSuccess] = useState(false)
@@ -25,13 +27,20 @@ export default function SignUpForm() {
     }))
   }
 
+  const handleRoleChange = (value) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      role: value,
+    }))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError("")
     setSuccess(false)
 
     // Basic validation
-    if (!formData.username || !formData.email || !formData.password || !formData.confirmPassword) {
+    if (!formData.username || !formData.email || !formData.password || !formData.confirmPassword || !formData.role) {
       setError("All fields are required")
       return
     }
@@ -52,6 +61,7 @@ export default function SignUpForm() {
         email: "",
         password: "",
         confirmPassword: "",
+        role: "", // Add this line
       })
     } catch (err) {
       setError("An error occurred. Please try again.")
@@ -80,6 +90,18 @@ export default function SignUpForm() {
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="role">Role</Label>
+            <Select onValueChange={handleRoleChange} value={formData.role}>
+              <SelectTrigger id="role">
+                <SelectValue placeholder="Select your role" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="patient">Patient</SelectItem>
+                <SelectItem value="doctor">Doctor</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
