@@ -4,15 +4,12 @@ import { Avatar } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Scan, LogOut, User } from "lucide-react"
+import Link from "next/link" // Import the Link component
 
 export default function PatientDashboard() {
   const mockPatient = {
     name: "John Doe",
     id: "PAT-123456",
-  }
-
-  const mockPhysician = {
-    name: "Dr. Sarah Smith",
   }
 
   const mockMedications = [
@@ -30,8 +27,8 @@ export default function PatientDashboard() {
             <User className="w-12 h-12" />
           </Avatar>
           <div className="text-center">
-            <h2 className="font-semibold">{mockPhysician.name}</h2>
-            <p className="text-sm text-muted-foreground">Physician</p>
+            <h2 className="font-semibold">{mockPatient.name}</h2>
+            <p className="text-sm text-muted-foreground">Patient</p>
           </div>
         </div>
 
@@ -52,21 +49,25 @@ export default function PatientDashboard() {
         <div className="max-w-5xl mx-auto">
           <div className="mb-8">
             <h1 className="text-3xl font-bold mb-2">Welcome {mockPatient.name}!</h1>
-            <p className="text-muted-foreground">{mockPatient.id}</p>
           </div>
 
           {/* Medications Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {mockMedications.map((medication, index) => (
-              <Card key={index}>
-                <CardContent className="p-6">
-                  <h3 className="font-semibold mb-2">{medication.name}</h3>
-                  <div className="space-y-1 text-sm text-muted-foreground">
-                    <p>Dosage: {medication.dosage}</p>
-                    <p>Frequency: {medication.frequency}</p>
-                  </div>
-                </CardContent>
-              </Card>
+              <Link
+                key={index}
+                href={`/Medications/${index}`} // Dynamic route for each medication
+              >
+                <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+                  <CardContent className="p-6">
+                    <h3 className="font-semibold mb-2">{medication.name}</h3>
+                    <div className="space-y-1 text-sm text-muted-foreground">
+                      <p>Dosage: {medication.dosage}</p>
+                      <p>Frequency: {medication.frequency}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
@@ -74,4 +75,3 @@ export default function PatientDashboard() {
     </div>
   )
 }
-

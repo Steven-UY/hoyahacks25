@@ -11,10 +11,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 export default function SignUpForm() {
   const [formData, setFormData] = useState({
     username: "",
-    email: "",
     password: "",
-    confirmPassword: "",
-    role: "", // Add this line
+    email: "",
+    age: "",
+    role: "",
   })
   const [error, setError] = useState("")
   const [success, setSuccess] = useState(false)
@@ -40,13 +40,14 @@ export default function SignUpForm() {
     setSuccess(false)
 
     // Basic validation
-    if (!formData.username || !formData.email || !formData.password || !formData.confirmPassword || !formData.role) {
+    if (!formData.username || !formData.email || !formData.password || !formData.age || !formData.role) {
       setError("All fields are required")
       return
     }
 
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match")
+    const age = Number.parseInt(formData.age, 10)
+    if (isNaN(age) || age < 1 || age > 120) {
+      setError("Please enter a valid age between 1 and 120")
       return
     }
 
@@ -58,10 +59,10 @@ export default function SignUpForm() {
       // Reset form after successful submission
       setFormData({
         username: "",
-        email: "",
         password: "",
-        confirmPassword: "",
-        role: "", // Add this line
+        email: "",
+        age: "",
+        role: "",
       })
     } catch (err) {
       setError("An error occurred. Please try again.")
@@ -77,31 +78,15 @@ export default function SignUpForm() {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="username">Username</Label>
+            <Label htmlFor="fullname">Full Name</Label>
             <Input
-              id="username"
-              name="username"
+              id="fullname"
+              name="fullname"
               type="text"
               value={formData.username}
               onChange={handleChange}
               required
             />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="role">Role</Label>
-            <Select onValueChange={handleRoleChange} value={formData.role}>
-              <SelectTrigger id="role">
-                <SelectValue placeholder="Select your role" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="patient">Patient</SelectItem>
-                <SelectItem value="doctor">Doctor</SelectItem>
-              </SelectContent>
-            </Select>
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
@@ -115,15 +100,33 @@ export default function SignUpForm() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <Label htmlFor="email">Email</Label>
+            <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="age">Age</Label>
             <Input
-              id="confirmPassword"
-              name="confirmPassword"
-              type="password"
-              value={formData.confirmPassword}
+              id="age"
+              name="age"
+              type="number"
+              value={formData.age}
               onChange={handleChange}
               required
+              min="1"
+              max="120"
             />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="role">Role</Label>
+            <Select onValueChange={handleRoleChange} value={formData.role}>
+              <SelectTrigger id="role">
+                <SelectValue placeholder="Select your role" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="patient">Patient</SelectItem>
+                <SelectItem value="doctor">Doctor</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           {error && (
             <Alert variant="destructive">
@@ -151,4 +154,3 @@ export default function SignUpForm() {
     </Card>
   )
 }
-
