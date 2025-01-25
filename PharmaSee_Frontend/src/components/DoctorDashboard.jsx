@@ -4,16 +4,19 @@ import { Avatar } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Scan, LogOut, User } from "lucide-react"
+import Link from "next/link"
 
 export default function DoctorDashboard() {
   const mockPhysician = {
     name: "Dr. Sarah Smith",
+    id: "DOC-654321",
   }
 
   const mockPatients = [
-    { name: "John Doe", age: 45, condition: "Hypertension" },
-    { name: "Jane Smith", age: 32, condition: "Diabetes" },
-    { name: "Michael Brown", age: 60, condition: "Heart Disease" },
+    { id: 1, name: "John Doe", age: 45, condition: "Hypertension" },
+    { id: 2, name: "Jane Smith", age: 32, condition: "Diabetes" },
+    { id: 3, name: "Michael Brown", age: 60, condition: "Heart Disease" },
+    // Add more patients as needed
   ]
 
   return (
@@ -26,7 +29,7 @@ export default function DoctorDashboard() {
           </Avatar>
           <div className="text-center">
             <h2 className="font-semibold">{mockPhysician.name}</h2>
-            <p className="text-sm text-muted-foreground">Physician</p>
+            <p className="text-sm text-muted-foreground">Physician ID: {mockPhysician.id}</p>
           </div>
         </div>
 
@@ -47,20 +50,27 @@ export default function DoctorDashboard() {
         <div className="max-w-5xl mx-auto">
           <div className="mb-8">
             <h1 className="text-3xl font-bold mb-2">Welcome {mockPhysician.name}!</h1>
+            <p className="text-muted-foreground">Manage your patients below.</p>
           </div>
 
           {/* Patients Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockPatients.map((patient, index) => (
-              <Card key={index}>
-                <CardContent className="p-6">
-                  <h3 className="font-semibold mb-2">{patient.name}</h3>
-                  <div className="space-y-1 text-sm text-muted-foreground">
-                    <p>Age: {patient.age}</p>
-                    <p>Condition: {patient.condition}</p>
-                  </div>
-                </CardContent>
-              </Card>
+            {mockPatients.map((patient) => (
+              <Link
+                key={patient.id}
+                href={`/Patients/${patient.id}`} // Dynamic route for each patient
+                className="block transition-transform hover:scale-105"
+              >
+                <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+                  <CardContent className="p-6">
+                    <h3 className="font-semibold mb-2">{patient.name}</h3>
+                    <div className="space-y-1 text-sm text-muted-foreground">
+                      <p>Age: {patient.age}</p>
+                      <p>Condition: {patient.condition}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
