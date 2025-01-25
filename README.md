@@ -1,4 +1,6 @@
 # PharmaSee
+  ![PharmaSee](https://github.com/user-attachments/assets/1c02a728-e397-4d3a-8d64-2408870a1d62)
+
 
 ## Inspiration
 
