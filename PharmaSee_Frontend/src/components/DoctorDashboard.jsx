@@ -5,16 +5,15 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Scan, LogOut, User } from "lucide-react"
 
-export default function PatientDashboard() {
-
+export default function DoctorDashboard() {
   const mockPhysician = {
     name: "Dr. Sarah Smith",
   }
 
-  const mockMedications = [
-    { name: "Medication 1", dosage: "20mg", frequency: "Daily" },
-    { name: "Medication 2", dosage: "10mg", frequency: "Twice daily" },
-    { name: "Medication 3", dosage: "5mg", frequency: "As needed" },
+  const mockPatients = [
+    { name: "John Doe", age: 45, condition: "Hypertension" },
+    { name: "Jane Smith", age: 32, condition: "Diabetes" },
+    { name: "Michael Brown", age: 60, condition: "Heart Disease" },
   ]
 
   return (
@@ -50,15 +49,15 @@ export default function PatientDashboard() {
             <h1 className="text-3xl font-bold mb-2">Welcome {mockPhysician.name}!</h1>
           </div>
 
-          {/* Medications Grid */}
+          {/* Patients Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockMedications.map((medication, index) => (
+            {mockPatients.map((patient, index) => (
               <Card key={index}>
                 <CardContent className="p-6">
-                  <h3 className="font-semibold mb-2">{medication.name}</h3>
+                  <h3 className="font-semibold mb-2">{patient.name}</h3>
                   <div className="space-y-1 text-sm text-muted-foreground">
-                    <p>Dosage: {medication.dosage}</p>
-                    <p>Frequency: {medication.frequency}</p>
+                    <p>Age: {patient.age}</p>
+                    <p>Condition: {patient.condition}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -69,4 +68,3 @@ export default function PatientDashboard() {
     </div>
   )
 }
-
