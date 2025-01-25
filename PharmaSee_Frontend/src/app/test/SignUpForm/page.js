@@ -1,9 +1,9 @@
-import PatientDashboard from '@/components/PatientDashboard'
+import SignUpForm from '@/components/SignUpForm'
 
 export default function SignUpPage() {
   return (
     <div className="">
-      <PatientDashboard/>
+      <SignUpForm/>
     </div>
   )
 }

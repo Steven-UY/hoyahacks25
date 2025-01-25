@@ -9,7 +9,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({
-    email: "",
+    fullname: "",
     password: "",
   })
   const [error, setError] = useState("")
@@ -29,23 +29,22 @@ export default function LoginForm() {
     setSuccess(false)
 
     // Basic validation
-    if (!formData.email || !formData.password) {
+    if (!formData.fullname || !formData.password) {
       setError("All fields are required")
       return
     }
 
     try {
-      // Here you would typically send the login request to your backend API
-      // For this example, we'll just simulate a successful login
+      // Simulate a successful login
       await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate API call
       setSuccess(true)
       // Reset form after successful login
       setFormData({
-        email: "",
+        fullname: "",
         password: "",
       })
     } catch (err) {
-      setError("Invalid email or password. Please try again.")
+      setError("Invalid fullname or password. Please try again.")
     }
   }
 
@@ -58,8 +57,15 @@ export default function LoginForm() {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required />
+            <Label htmlFor="fullname">Full Name</Label>
+            <Input
+              id="fullname"
+              name="fullname"
+              type="text"
+              value={formData.fullname}
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
@@ -98,4 +104,3 @@ export default function LoginForm() {
     </Card>
   )
 }
-

@@ -6,9 +6,9 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Scan, LogOut, User } from "lucide-react"
 
 export default function PatientDashboard() {
-  const mockPatient = {
-    name: "John Doe",
-    id: "PAT-123456",
+
+  const mockPhysician = {
+    name: "Dr. Sarah Smith",
   }
 
   const mockMedications = [
@@ -26,11 +26,11 @@ export default function PatientDashboard() {
             <User className="w-12 h-12" />
           </Avatar>
           <div className="text-center">
-            <h2 className="font-semibold">{mockPatient.name}</h2>
-            <p className="text-sm text-muted-foreground">Patient</p>
+            <h2 className="font-semibold">{mockPhysician.name}</h2>
+            <p className="text-sm text-muted-foreground">Physician</p>
           </div>
         </div>
-        
+
         <div className="flex flex-col gap-2 mt-auto">
           <Button className="w-full" variant="outline">
             <Scan className="mr-2 h-4 w-4" />
@@ -47,7 +47,7 @@ export default function PatientDashboard() {
       <main className="flex-1 p-8">
         <div className="max-w-5xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2">Welcome {mockPatient.name}!</h1>
+            <h1 className="text-3xl font-bold mb-2">Welcome {mockPhysician.name}!</h1>
           </div>
 
           {/* Medications Grid */}
