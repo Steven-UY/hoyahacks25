@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 export default function SignUpForm() {
   const [formData, setFormData] = useState({
-    username: "",
+    fullName: "",
     password: "",
     email: "",
     age: "",
@@ -40,7 +40,7 @@ export default function SignUpForm() {
     setSuccess(false)
 
     // Basic validation
-    if (!formData.username || !formData.email || !formData.password || !formData.age || !formData.role) {
+    if (!formData.fullName || !formData.email || !formData.password || !formData.age || !formData.role) {
       setError("All fields are required")
       return
     }
@@ -51,14 +51,29 @@ export default function SignUpForm() {
       return
     }
 
+    // AJAX Request
     try {
-      // Here you would typically send the form data to your backend API
-      // For this example, we'll just simulate a successful signup
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+      }
+      console.log(formData);
+
+
+
       await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate API call
       setSuccess(true)
       // Reset form after successful submission
       setFormData({
-        username: "",
+        fullName: "",
         password: "",
         email: "",
         age: "",
@@ -80,10 +95,21 @@ export default function SignUpForm() {
           <div className="space-y-2">
             <Label htmlFor="fullname">Full Name</Label>
             <Input
-              id="fullname"
-              name="fullname"
+              id="fullName"
+              name="fullName"
               type="text"
-              value={formData.username}
+              value={formData.fullName}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              value={formData.password}
               onChange={handleChange}
               required
             />
@@ -102,6 +128,19 @@ export default function SignUpForm() {
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="age">Age</Label>
+            <Input
+              id="age"
+              name="age"
+              type="text"
+              value={formData.age}
+              onChange={handleChange}
+              required
+              min="1"
+              max="120"
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="age">Age</Label>
