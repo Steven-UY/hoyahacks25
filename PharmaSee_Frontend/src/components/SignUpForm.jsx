@@ -115,17 +115,6 @@ export default function SignUpForm() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required />
           </div>
@@ -135,19 +124,6 @@ export default function SignUpForm() {
               id="age"
               name="age"
               type="text"
-              value={formData.age}
-              onChange={handleChange}
-              required
-              min="1"
-              max="120"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="age">Age</Label>
-            <Input
-              id="age"
-              name="age"
-              type="number"
               value={formData.age}
               onChange={handleChange}
               required

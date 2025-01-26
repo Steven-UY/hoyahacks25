@@ -49,10 +49,7 @@ app.post('/api/login', (req, res) => {
   try {
     const patient = Patient.findOne({ fullName: fullName});
     if (!patient) {
-      const doctor = Doctor.findOne({ fullName: fullName});
-      if (!doctor) {
-        return res.status(401).send('User not found');
-      }
+      return res.status(404).send('Patient not found');
     }
 
     if (patient.password !== password) {
