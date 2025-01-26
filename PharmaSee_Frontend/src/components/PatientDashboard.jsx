@@ -1,9 +1,10 @@
 "use client"
 import { useEffect, useState } from "react"
-import { Avatar } from "@/components/ui/avatar"
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Scan, LogOut, User } from "lucide-react"
+import Image from 'next/image'
 import Link from "next/link"
 
 export default function PatientDashboard() {
@@ -18,9 +19,9 @@ export default function PatientDashboard() {
     }
 
     const mockPatients = [
-      { id: "PAT-001", fullName: "Paxil", age: '20mg', nextAppointment: "2" ,count:"1",desc: "Paxil is like a tiny helper that makes you feel less sad or worried by balancing the happy chemicals in your brain."},
-      { id: "PAT-002", fullName: "Ascorbic acid", age: '32mg', nextAppointment: "3",count:"1",desc:"Ascorbic acid, also known as Vitamin C, helps your body heal wounds and make your teeth, skin, and bones strong. It also helps protect your body from getting sick."},
-      { id: "PAT-003", fullName: "Vitamin C", age: '45mg', nextAppointment: "1",count:"1" ,desc:"Vitamin C is just like the fuel for your body that helps you grow properly and fight off germs. "},
+      {id: "PAT-001", fullName: "Vitamin C", age: '500mg', nextAppointment: "1", count: "1",desc: "Vitamin C is like a shield that boosts your immune system and helps your body stay strong and healthy."} ,     
+      { id: "PAT-002", fullName: "Acetaminophen", age: '20mg', nextAppointment: "2" ,count:"1",desc: "Tylenol is like a gentle helper that eases pain and lowers fevers, giving your body a break so you can feel more comfortable."},
+      { id: "PAT-003", fullName: "Ibuprofen", age: '32mg', nextAppointment: "3",count:"1",desc:"Ibuprofen is like a caring friend that soothes aches, reduces swelling, and helps bring fown fevers, letting you more at easte."},
     ]
 
     const fetchData = async () => {
@@ -50,7 +51,12 @@ export default function PatientDashboard() {
       <aside className="w-64 bg-teal-600 p-6 flex flex-col gap-6">
         <div className="flex flex-col items-center gap-4">
           <Avatar className="w-24 h-24 bg-white">
-            <User className="w-12 h-12 text-teal-600" />
+            <Image
+              src="/assets/john.jpg"
+              alt="Profile picture"
+              width={96}
+              height={96}
+            />
           </Avatar>
           <div className="text-center">
             <h2 className="font-semibold text-white text-lg">{physician.name}</h2>

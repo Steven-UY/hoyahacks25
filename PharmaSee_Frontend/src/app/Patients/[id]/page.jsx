@@ -18,8 +18,8 @@ const mockPatients = [
     age: 45,
     condition: "Hypertension",
     medications: [
-      { name: "Lisinopril", dosage: "10mg", frequency: "Once daily" },
-      { name: "Amlodipine", dosage: "5mg", frequency: "Once daily" },
+      { name: "Ibuprofen", dosage: "10mg", frequency: "Once daily" },
+      { name: "Acetaminophen", dosage: "5mg", frequency: "Once daily" },
     ],
   },
   {

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Scan, LogOut, User } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 export default function DoctorDashboard() {
   const [physician, setPhysician] = useState(null)
@@ -13,7 +14,7 @@ export default function DoctorDashboard() {
 
   useEffect(() => {
     const mockPhysician = {
-      name: "Dr. arah Smith",
+      name: "Dr. Sarah Smith",
       id: "DOC-654321",
     }
 
@@ -50,7 +51,12 @@ export default function DoctorDashboard() {
       <aside className="w-64 bg-teal-600 p-6 flex flex-col gap-6">
         <div className="flex flex-col items-center gap-4">
           <Avatar className="w-24 h-24 bg-white">
-            <User className="w-12 h-12 text-teal-600" />
+            <Image
+              src="/assets/doctor.jpg"
+              alt="Doctor profile picture"
+              width={96}
+              height={96}
+            />
           </Avatar>
           <div className="text-center">
             <h2 className="font-semibold text-white text-lg">{physician.name}</h2>
