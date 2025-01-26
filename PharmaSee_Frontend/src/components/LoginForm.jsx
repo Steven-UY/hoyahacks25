@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useRouter } from "next/navigation"
 
 export default function LoginForm() {
-  const [formData, setFormData] = useState({ fullName: "", password: "", role: "" });
+  const [formData, setFormData] = useState({ fullName: "", password: "", role: "" })
   const [error, setError] = useState("")
   const [success, setSuccess] = useState(false)
   const router = useRouter()
@@ -22,7 +22,7 @@ export default function LoginForm() {
       [name]: value,
     }))
   }
-  
+
   const handleRoleChange = (value) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -43,30 +43,28 @@ export default function LoginForm() {
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      });
+      })
 
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+        const errorText = await response.text()
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
       }
-      const data = await response.json();
-      console.log(data);
+      const data = await response.json()
+      console.log(data)
       if (data.authorized === false) {
-        router.push('/LoginForm');
-      }
-      else if (data.authenticated === true && data.role === 'patient') {
-        router.push('/PatientDashboard');
-      }
-      else if (data.authenticated === true && data.role === 'doctor') {
-        router.push('/DoctorDashboard');
+        router.push("/LoginForm")
+      } else if (data.authenticated === true && data.role === "patient") {
+        router.push("/PatientDashboard")
+      } else if (data.authenticated === true && data.role === "doctor") {
+        router.push("/DoctorDashboard")
       }
 
-      console.log(formData);
+      console.log(formData)
 
       // Simulate a successful login
       await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate API call
@@ -83,71 +81,81 @@ export default function LoginForm() {
   }
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle>Login</CardTitle>
-        <CardDescription>Enter your credentials to access your account</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="fullName">Full Name</Label>
-            <Input
-              id="fullName"
-              name="fullName"
-              type="text"
-              value={formData.fullName}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="role">Role</Label>
-            <Select onValueChange={handleRoleChange} value={formData.role}>
-              <SelectTrigger id="role">
-                <SelectValue placeholder="Select your role" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="patient">Patient</SelectItem>
-                <SelectItem value="doctor">Doctor</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          {error && (
-            <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-          {success && (
-            <Alert>
-              <AlertDescription>Login successful! Welcome back, {formData.role}!</AlertDescription>
-            </Alert>
-          )}
-          <Button type="submit" className="w-full">
-            Login
-          </Button>
-        </form>
-      </CardContent>
-      <CardFooter className="flex justify-center">
-        <p className="text-sm text-gray-500">
-          Don't have an account?{" "}
-          <a href="/signup" className="text-blue-500 hover:underline">
-            Sign up
-          </a>
-        </p>
-      </CardFooter>
-    </Card>
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-blue-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <Card className="w-full max-w-md bg-white border-teal-200 shadow-lg">
+        <CardHeader className="bg-teal-600 text-white rounded-t-lg">
+          <CardTitle className="text-2xl font-bold">Login</CardTitle>
+          <CardDescription className="text-teal-100">Enter your credentials to access your account</CardDescription>
+        </CardHeader>
+        <CardContent className="pt-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="fullName" className="text-teal-700">
+                Full Name
+              </Label>
+              <Input
+                id="fullName"
+                name="fullName"
+                type="text"
+                value={formData.fullName}
+                onChange={handleChange}
+                required
+                className="border-teal-300 focus:border-teal-500 focus:ring-teal-500"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-teal-700">
+                Password
+              </Label>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                className="border-teal-300 focus:border-teal-500 focus:ring-teal-500"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="role" className="text-teal-700">
+                Role
+              </Label>
+              <Select onValueChange={handleRoleChange} value={formData.role}>
+                <SelectTrigger id="role" className="border-teal-300 focus:border-teal-500 focus:ring-teal-500">
+                  <SelectValue placeholder="Select your role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="patient">Patient</SelectItem>
+                  <SelectItem value="doctor">Doctor</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            {error && (
+              <Alert variant="destructive" className="bg-red-100 text-red-800 border-red-300">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+            {success && (
+              <Alert className="bg-green-100 text-green-800 border-green-300">
+                <AlertDescription>Login successful! Welcome back, {formData.role}!</AlertDescription>
+              </Alert>
+            )}
+            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white transition-colors">
+              Login
+            </Button>
+          </form>
+        </CardContent>
+        <CardFooter className="flex justify-center bg-teal-50 rounded-b-lg">
+          <p className="text-sm text-teal-600">
+            Don't have an account?{" "}
+            <a href="/signup" className="text-blue-600 hover:underline font-semibold">
+              Sign up
+            </a>
+          </p>
+        </CardFooter>
+      </Card>
+    </div>
   )
 }
 
