@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { ArrowLeft } from "lucide-react"
 import Autocomplete from "@/components/Autocomplete"
+
 // Mock data for patients and their medications
 const mockPatients = [
   {
@@ -62,15 +63,19 @@ export default function PatientDetails() {
 
   if (!patient) {
     return (
-      <div className="min-h-screen bg-background p-8">
+      <div className="min-h-screen bg-gradient-to-br from-teal-50 to-blue-50 p-8">
         <div className="max-w-2xl mx-auto">
-          <Button variant="ghost" onClick={() => router.back()} className="mb-4">
+          <Button
+            variant="ghost"
+            onClick={() => router.back()}
+            className="mb-4 text-teal-700 hover:text-teal-800 hover:bg-teal-100"
+          >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Dashboard
           </Button>
-          <Card>
+          <Card className="bg-white border-teal-200 shadow-lg">
             <CardContent className="p-6">
-              <p>Patient not found. Please check the URL and try again.</p>
+              <p className="text-teal-800">Patient not found. Please check the URL and try again.</p>
             </CardContent>
           </Card>
         </div>
@@ -94,29 +99,33 @@ export default function PatientDetails() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-8">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-blue-50 p-8">
       <div className="max-w-3xl mx-auto">
-        <Button variant="ghost" onClick={() => router.back()} className="mb-4">
+        <Button
+          variant="ghost"
+          onClick={() => router.back()}
+          className="mb-4 text-teal-700 hover:text-teal-800 hover:bg-teal-100"
+        >
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Dashboard
         </Button>
-        <Card className="mb-6">
-          <CardHeader>
+        <Card className="mb-6 bg-white border-teal-200 shadow-lg">
+          <CardHeader className="bg-teal-600 text-white rounded-t-lg">
             <CardTitle>{patient.fullName}</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
+          <CardContent className="p-6">
+            <div className="space-y-2 text-teal-800">
               <p>Age: {patient.age}</p>
               <p>Condition: {patient.condition}</p>
             </div>
           </CardContent>
         </Card>
-        <Card className="mb-6">
-          <CardHeader>
+        <Card className="mb-6 bg-white border-teal-200 shadow-lg">
+          <CardHeader className="bg-teal-600 text-white rounded-t-lg">
             <CardTitle>Current Medications</CardTitle>
           </CardHeader>
-          <CardContent>
-            <ul className="list-disc pl-5 space-y-2">
+          <CardContent className="p-6">
+            <ul className="list-disc pl-5 space-y-2 text-teal-800">
               {patient.medications.map((med, index) => (
                 <li key={index}>
                   {med.name} - {med.dosage}, {med.frequency}
@@ -132,3 +141,4 @@ export default function PatientDetails() {
     </div>
   )
 }
+
