@@ -32,35 +32,8 @@ function readOutputFile() {
   }
 }
 
-// Function to extract the type of drug using OpenAI
-// async function extractDrugType(text) {
-//   const prompt = `Extract the type of drug from the following text:\n\n${text}\n\nDrug type:`;
-//   try {
-//     const response = await openai.chat.completions.create({
-//       model: 'gpt-4',
-//       messages: [{
-//         role: "user",
-//         content: [
-//           { 
-//             type: "text", 
-//             text: prompt 
-//           },
-//           { 
-//             type: "text", 
-
-//           }
-//         ]
-//       }],
-//       max_tokens: 4096
-//     });
-//     return response.choices[0].text.trim();
-//   } catch (err) {
-//     console.error('Error extracting drug type:', err);
-//     return null;
-//   }
-// }
 async function extractDrugType(text) {
-  const prompt = `Extract the type of medicine from the following text:\n\n${text}\n\nDrug type:`;
+  const prompt = `Extract the scientific name of the drug and dose from the following text:\n\n${text}\n\nDrug type:`;
   try {
     const response = await openai.chat.completions.create({
       model: 'gpt-4',
@@ -96,7 +69,7 @@ app.post('/api/ocr', async (req, res) => {
         content: [
           { 
             type: "text", 
-            text: "Extract all text from this image exactly as it appears. Include all formatting, spacing, and special characters. Do not add any commentary or translations." 
+            text: "Extract all text from this image exactly as it appears. Include all formatting, spacing, and special characters. Do not add any commentary. Translate to English if in other language." 
           },
           { 
             type: "image_url", 
