@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -8,23 +8,35 @@ import { Scan, LogOut, User } from "lucide-react";
 import Link from "next/link";
 
 export default function PatientDashboard() {
-  // Initialize patient data directly without useEffect
-  const [patient] = useState({
-    _id: "PAT-123456",
-    fullName: "John Doe",
-    email: "johndoe@example.com",
-    age: 30,
-    // Simulating populated medications with string _id fields
-    medication: [
-      { _id: "MED-001", name: "Medication 1" },
-      { _id: "MED-002", name: "Medication 2" },
-      { _id: "MED-003", name: "Medication 3" },
-    ],
-  });
+  const [patient, setPatient] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchPatientData = async () => {
+      try {
+        const response = await fetch('http://localhost:5001/api/patientDashboard');
+        if (!response.ok) {
+          throw new Error('Failed to fetch patient data');
+        }
+        const data = await response.json();
+        setPatient(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPatientData();
+  }, []);
+  
+  if (loading) return <div className="p-8">Loading...</div>;
+  if (error) return <div className="p-8 text-red-500">Error: {error}</div>;
+  if (!patient) return <div className="p-8">No patient data found</div>;
 
   return (
     <div className="min-h-screen flex">
-      {/* Sidebar */}
       <aside className="w-64 border-r bg-background p-6 flex flex-col gap-6">
         <div className="flex flex-col items-center gap-4">
           <Avatar className="w-24 h-24">
@@ -48,24 +60,26 @@ export default function PatientDashboard() {
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 p-8">
         <div className="max-w-5xl mx-auto">
           <div className="mb-8">
             <h1 className="text-3xl font-bold mb-2">Welcome {patient.fullName}!</h1>
           </div>
-
-          {/* Medications Grid */}
+          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {patient.medication.map((medication) => (
               <Link
-                key={medication._id}
-                href={`/Medications/${medication._id}`} // Dynamic route for each medication
+                key={medication.id}
+                href={`/dashboard/medication/${medication.id}`}
+                className="block transition-transform hover:scale-105"
               >
                 <Card className="cursor-pointer hover:shadow-lg transition-shadow">
                   <CardContent className="p-6">
                     <h3 className="font-semibold mb-2">{medication.name}</h3>
-                    {/* Future: Add more details if needed */}
+                    <div className="space-y-1 text-sm text-muted-foreground">
+                      <p>Dosage: {medication.dose}</p>
+                      <p>Frequency: {medication.frequency}</p>
+                    </div>
                   </CardContent>
                 </Card>
               </Link>
