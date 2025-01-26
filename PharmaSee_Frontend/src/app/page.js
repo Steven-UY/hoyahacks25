@@ -1,16 +1,14 @@
-<<<<<<< Updated upstream
-import SignUpForm from '../components/SignUpForm'
+import SignUpForm from '@/components/SignUpForm'
 import LoginForm from '@/components/LoginForm'
 import PatientDashboard from '@/components/PatientDashboard'
-=======
-import SignUpForm from '@/components/SignUpForm'
 
->>>>>>> Stashed changes
 
-export default function SignUpPage() {
+export default function Home() {
   return (
     <div className="">
       <SignUpForm/>
+      <LoginForm/>
+      <PatientDashboard/>
     </div>
   )
 }
