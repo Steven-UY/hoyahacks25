@@ -49,43 +49,49 @@ const OpenAIOcr = () => {
   }
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardHeader>
-        <CardTitle>Webcam OCR with OpenAI</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="relative aspect-video">
-          <Webcam
-            audio={false}
-            ref={webcamRef}
-            screenshotFormat="image/jpeg"
-            videoConstraints={{ facingMode: "environment" }}
-            className="w-full h-full object-cover rounded-md"
-          />
-        </div>
-        {text && (
-          <div className="p-4 bg-gray-100 rounded-md">
-            <h3 className="font-semibold mb-2">Extracted Text:</h3>
-            <p className="whitespace-pre-wrap">{text}</p>
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-blue-50 py-12">
+      <Card className="w-full max-w-2xl mx-auto bg-white border-teal-200 shadow-lg">
+        <CardHeader className="bg-teal-600 text-white rounded-t-lg">
+          <CardTitle className="text-2xl font-bold">Scan Your Medicine</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4 p-6">
+          <div className="relative aspect-video rounded-md overflow-hidden border-2 border-teal-300">
+            <Webcam
+              audio={false}
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              videoConstraints={{ facingMode: "environment" }}
+              className="w-full h-full object-cover"
+            />
           </div>
-        )}
-      </CardContent>
-      <CardFooter>
-        <Button onClick={capture} disabled={loading} className="w-full">
-          {loading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Processing...
-            </>
-          ) : (
-            <>
-              <Camera className="mr-2 h-4 w-4" />
-              Capture & Read Text
-            </>
+          {text && (
+            <div className="p-4 bg-teal-50 rounded-md border border-teal-200">
+              <h3 className="font-semibold mb-2 text-teal-800">Extracted Text:</h3>
+              <p className="whitespace-pre-wrap text-teal-700">{text}</p>
+            </div>
           )}
-        </Button>
-      </CardFooter>
-    </Card>
+        </CardContent>
+        <CardFooter className="bg-teal-50 rounded-b-lg">
+          <Button
+            onClick={capture}
+            disabled={loading}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white transition-colors"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              <>
+                <Camera className="mr-2 h-4 w-4" />
+                Capture & Read Text
+              </>
+            )}
+          </Button>
+        </CardFooter>
+      </Card>
+    </div>
   )
 }
 
