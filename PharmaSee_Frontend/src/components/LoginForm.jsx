@@ -6,16 +6,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useRouter } from "next/navigation"
 
 export default function LoginForm() {
-  const [formData, setFormData] = useState({
-    fullname: "",
-    password: "",
-    role: "",
-  })
+  const [formData, setFormData] = useState({ fullname: "", password: "", role: "" });
   const [error, setError] = useState("")
   const [success, setSuccess] = useState(false)
+  const router = useRouter()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -44,6 +41,32 @@ export default function LoginForm() {
     }
 
     try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+      }
+      const data = await response.json();
+      console.log(data);
+      if (data.authorized === false) {
+        router.push('/LoginForm');
+      }
+      else if (data.authorized === true && data.role === 'patient') {
+        router.push('/PatientDashboard');
+      }
+      else if (data.authorized === true && data.role === 'doctor') {
+        router.push('/DoctorDashboard');
+      }
+
+      console.log(formData);
+
       // Simulate a successful login
       await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate API call
       setSuccess(true)

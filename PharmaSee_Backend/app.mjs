@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import mongoose from 'mongoose';
+import mongoose, { trusted } from 'mongoose';
 import { Patient, Doctor, Medication } from './db.mjs';
 
 dotenv.config();
@@ -45,18 +45,39 @@ app.post('/api/register', async (req, res) => {
 });
 
 app.post('/api/login', (req, res) => {
-  const { fullName, password } = req.body;
+  const { fullName, password, role } = req.body;
   try {
-    const patient = Patient.findOne({ fullName: fullName});
-    if (!patient) {
-      return res.status(404).send('Patient not found');
+    // if role set to patient
+    if (role === 'patient') {
+      const patient = Patient.findOne({ fullName: fullName});
+      // if patient name not found
+      if (!patient) {
+        return res.status(404).send('Patient not found');
+      }
+      // if password does not match
+      if (patient.password !== password) {
+        return res.status(401).json({message:'Incorrect password', authenticated: false, role: 'patient'});
+      }
+      // successful login
+      else {
+        return res.status(200).json({message:'Login successful', authenticated: true, role: 'patient'});
+      }
     }
-
-    if (patient.password !== password) {
-      return res.status(401).send('Incorrect password');
+    // if role set to doctor
+    else if (role === 'doctor') {
+      const doctor = Doctor.findOne({ fullName: fullName});
+      // if doctor name not found
+      if (!doctor) {
+        return res.status(404).send('Doctor not found');
+      }
+      // if password does not match
+      if (doctor.password !== password) {
+        return res.status(401).json({message:'Incorrect password', authenticated: false, role: 'doctor'});
+      }
+      else {
+        return res.status(200).json({message:'Login successful', authenticated: true, role: 'doctor'});
+      }
     }
-    return res.status(200).json({message:'Login successful', user: patient});
-
   }
   catch (error) {
     res.status(500).send('Internal server error: ' + error);
