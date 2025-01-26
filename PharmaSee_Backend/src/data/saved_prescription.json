@@ -1,13 +1,9 @@
-<<<<<<< HEAD
-Acetaminophen, 160 mg
-=======
 [
   {
-    "medicine": "Ascorbic acid",
-    "dosage": "123ssss",
-    "frequency": "123",
-    "count": "123",
-    "explanation": "Ascorbic acid, also known as Vitamin C, helps your body heal wounds and make your teeth, skin, and bones strong. It also helps protect your body from getting sick."
+    "medicine": "Vitamin C",
+    "dosage": "32",
+    "frequency": "1",
+    "count": "1",
+    "explanation": "Vitamin C is just like the fuel for your body that helps you grow properly and fight off germs. It's found in yummy fruits and vegetables, but sometimes you might need a little extra from a pill."
   }
 ]
->>>>>>> bigbrain
