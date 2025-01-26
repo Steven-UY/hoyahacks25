@@ -15,7 +15,7 @@ export default function MultiMedicineCheck() {
   const webcamRef = useRef(null)
 
   // 1) Hardcode valid medicines
-  const validMedicines = ["acetaminophen", "aspirin"] // Lowercase for easy comparison
+  const validMedicines = ["acetaminophen", "ibuprofen"] // Lowercase for easy comparison
 
   const capture = async () => {
     const imageSrc = webcamRef.current.getScreenshot()
