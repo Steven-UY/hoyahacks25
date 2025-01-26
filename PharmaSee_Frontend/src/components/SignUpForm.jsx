@@ -26,7 +26,7 @@ export default function SignUpForm() {
       [name]: value,
     }))
   }
-  
+
   const handleRoleChange = (value) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -54,20 +54,18 @@ export default function SignUpForm() {
     // AJAX Request
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/register`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       })
 
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+        const errorText = await response.text()
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
       }
-      console.log(formData);
-
-
+      console.log(formData)
 
       await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate API call
       setSuccess(true)
@@ -85,87 +83,110 @@ export default function SignUpForm() {
   }
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle>Sign Up</CardTitle>
-        <CardDescription>Create your account to get started</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="fullname">Full Name</Label>
-            <Input
-              id="fullName"
-              name="fullName"
-              type="text"
-              value={formData.fullName}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="age">Age</Label>
-            <Input
-              id="age"
-              name="age"
-              type="text"
-              value={formData.age}
-              onChange={handleChange}
-              required
-              min="1"
-              max="120"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="role">Role</Label>
-            <Select onValueChange={handleRoleChange} value={formData.role}>
-              <SelectTrigger id="role">
-                <SelectValue placeholder="Select your role" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="patient">Patient</SelectItem>
-                <SelectItem value="doctor">Doctor</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          {error && (
-            <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-          {success && (
-            <Alert>
-              <AlertDescription>Sign up successful! Welcome aboard!</AlertDescription>
-            </Alert>
-          )}
-          <Button type="submit" className="w-full">
-            Sign Up
-          </Button>
-        </form>
-      </CardContent>
-      <CardFooter className="flex justify-center">
-        <p className="text-sm text-gray-500">
-          Already have an account?{" "}
-          <a href="/login" className="text-blue-500 hover:underline">
-            Log in
-          </a>
-        </p>
-      </CardFooter>
-    </Card>
+    <div className="min-h-screen bg-gray-100 pt-16">
+      <Card className="w-full max-w-md mx-auto bg-navy-50 border-navy-200">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold text-navy-900">Sign Up</CardTitle>
+          <CardDescription className="text-navy-600">Create your account to get started</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="fullName" className="text-navy-700">
+                Full Name
+              </Label>
+              <Input
+                id="fullName"
+                name="fullName"
+                type="text"
+                value={formData.fullName}
+                onChange={handleChange}
+                required
+                className="border-navy-300 focus:border-navy-500 focus:ring-navy-500"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-navy-700">
+                Password
+              </Label>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                className="border-navy-300 focus:border-navy-500 focus:ring-navy-500"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-navy-700">
+                Email
+              </Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="border-navy-300 focus:border-navy-500 focus:ring-navy-500"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="age" className="text-navy-700">
+                Age
+              </Label>
+              <Input
+                id="age"
+                name="age"
+                type="text"
+                value={formData.age}
+                onChange={handleChange}
+                required
+                min="1"
+                max="120"
+                className="border-navy-300 focus:border-navy-500 focus:ring-navy-500"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="role" className="text-navy-700">
+                Role
+              </Label>
+              <Select onValueChange={handleRoleChange} value={formData.role}>
+                <SelectTrigger id="role" className="border-navy-300 focus:border-navy-500 focus:ring-navy-500">
+                  <SelectValue placeholder="Select your role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="patient">Patient</SelectItem>
+                  <SelectItem value="doctor">Doctor</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            {error && (
+              <Alert variant="destructive" className="bg-red-100 text-red-800 border-red-300">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+            {success && (
+              <Alert className="bg-green-100 text-green-800 border-green-300">
+                <AlertDescription>Sign up successful! Welcome aboard!</AlertDescription>
+              </Alert>
+            )}
+            <Button type="submit" className="w-full bg-navy-600 hover:bg-navy-700 text-white">
+              Sign Up
+            </Button>
+          </form>
+        </CardContent>
+        <CardFooter className="flex justify-center">
+          <p className="text-sm text-navy-600">
+            Already have an account?{" "}
+            <a href="/login" className="text-navy-700 hover:underline font-semibold">
+              Log in
+            </a>
+          </p>
+        </CardFooter>
+      </Card>
+    </div>
   )
 }
