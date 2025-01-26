@@ -1,0 +1,20 @@
+item {
+  id:3
+  name:'tri_drug'
+}
+item {
+  id:5
+  name:'cir_drug'
+}
+item {
+  id:2
+  name:'ovl_drug'
+}
+item {
+  id:4
+  name:'sqr_drug'
+}
+item {
+  id:1
+  name:'rec_drug'
+}
