@@ -1,6 +1,6 @@
 import PatientDashboard from '@/components/PatientDashboard'
 
-export default function SignUpPage() {
+export default function patientdashboard() {
   return (
     <div className="">
       <PatientDashboard/>

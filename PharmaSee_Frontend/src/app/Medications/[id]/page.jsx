@@ -4,25 +4,27 @@ import { useParams, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft } from "lucide-react"
+import { Avatar } from "@/components/ui/avatar"
+import { User } from "lucide-react"
 
-// Mock data for medications
+// Mock data for medications with string IDs
 const mockMedications = [
   {
-    id: 0,
+    _id: "MED-001",
     name: "Medication 1",
     dosage: "20mg",
     frequency: "Daily",
     description: "Used to treat high blood pressure.",
   },
   {
-    id: 1,
+    _id: "MED-002",
     name: "Medication 2",
     dosage: "10mg",
     frequency: "Twice daily",
     description: "An antibiotic for bacterial infections.",
   },
   {
-    id: 2,
+    _id: "MED-003",
     name: "Medication 3",
     dosage: "5mg",
     frequency: "As needed",
@@ -33,14 +35,14 @@ const mockMedications = [
 export default function MedicationDetails() {
   const router = useRouter()
   const params = useParams()
-  const medicationId = Number(params.id)
+  const medicationId = params.id // Keep as string
 
-  const medication = mockMedications.find((med) => med.id === medicationId)
+  const medication = mockMedications.find((med) => med._id === medicationId)
 
   if (!medication) {
-    return <div>Medication not found</div>
+    return <div className="p-8 text-red-500">Medication not found</div>
   }
-
+  
   return (
     <div className="min-h-screen bg-background p-8">
       <div className="max-w-2xl mx-auto">
@@ -49,7 +51,7 @@ export default function MedicationDetails() {
           Back to Dashboard
         </Button>
         <Card>
-          <CardHeader>
+          <CardHeader className="flex items-center gap-4">
             <CardTitle>{medication.name}</CardTitle>
           </CardHeader>
           <CardContent>
@@ -73,4 +75,3 @@ export default function MedicationDetails() {
     </div>
   )
 }
-

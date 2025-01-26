@@ -9,11 +9,11 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { ArrowLeft } from "lucide-react"
 
-// Mock data for patients and their medications
+// Mock data for patients and their medications with string-based IDs
 const mockPatients = [
   {
-    id: 1,
-    name: "John Doe",
+    id: "PAT-001",
+    fullName: "John Doe",
     age: 45,
     condition: "Hypertension",
     medications: [
@@ -22,8 +22,8 @@ const mockPatients = [
     ],
   },
   {
-    id: 2,
-    name: "Jane Smith",
+    id: "PAT-002",
+    fullName: "Jane Smith",
     age: 32,
     condition: "Diabetes",
     medications: [
@@ -32,8 +32,8 @@ const mockPatients = [
     ],
   },
   {
-    id: 3,
-    name: "Michael Brown",
+    id: "PAT-003",
+    fullName: "Michael Brown",
     age: 60,
     condition: "Heart Disease",
     medications: [
@@ -47,8 +47,9 @@ const mockPatients = [
 export default function PatientDetails() {
   const router = useRouter()
   const params = useParams()
-  const patientId = Number(params.id)
+  const patientId = params.id // Keep as string
 
+  // State to manage prescription form
   const [prescription, setPrescription] = useState({
     medication: "",
     dosage: "",
@@ -56,6 +57,7 @@ export default function PatientDetails() {
     instructions: "",
   })
 
+  // Find the patient based on the ID from the URL
   const patient = mockPatients.find((p) => p.id === patientId)
 
   if (!patient) {
@@ -100,7 +102,7 @@ export default function PatientDetails() {
         </Button>
         <Card className="mb-6">
           <CardHeader>
-            <CardTitle>{patient.name}</CardTitle>
+            <CardTitle>{patient.fullName}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
