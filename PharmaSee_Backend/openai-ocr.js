@@ -1,8 +1,10 @@
-require('dotenv').config()
-const fs = require('fs')
+require('dotenv').config();
+const fs = require('fs');
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const OpenAI = require('openai');
+const { text } = require('stream/consumers');
 
 const app = express();
 const port = /*process.env.PORT ||*/ 3001;
@@ -11,15 +13,78 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+// File paths
+const savedPrescriptionPath = path.join(__dirname, 'src/data', 'saved_prescription.json');
+const outputFilePath = path.join(__dirname, 'src', 'output.txt');
+
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Function to read the contents of output.txt
+function readOutputFile() {
+  try {
+    const data = fs.readFileSync(outputFilePath, 'utf8');
+    return data;
+  } catch (err) {
+    console.error(`Error reading ${outputFilePath}:`, err);
+    return null;
+  }
+}
+
+// Function to extract the type of drug using OpenAI
+// async function extractDrugType(text) {
+//   const prompt = `Extract the type of drug from the following text:\n\n${text}\n\nDrug type:`;
+//   try {
+//     const response = await openai.chat.completions.create({
+//       model: 'gpt-4',
+//       messages: [{
+//         role: "user",
+//         content: [
+//           { 
+//             type: "text", 
+//             text: prompt 
+//           },
+//           { 
+//             type: "text", 
+
+//           }
+//         ]
+//       }],
+//       max_tokens: 4096
+//     });
+//     return response.choices[0].text.trim();
+//   } catch (err) {
+//     console.error('Error extracting drug type:', err);
+//     return null;
+//   }
+// }
+async function extractDrugType(text) {
+  const prompt = `Extract the type of medicine from the following text:\n\n${text}\n\nDrug type:`;
+  try {
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4',
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        }
+      ],
+      max_tokens: 100, // Adjust this as needed for your response
+    });
+    return response.choices[0].message.content.trim(); // Correct access to the content
+  } catch (err) {
+    console.error('Error extracting drug type:', err);
+    return null;
+  }
+}
+
 
 // OCR Endpoint
 app.post('/api/ocr', async (req, res) => {
   try {
     const { image } = req.body;
-    
+
     if (!image) {
       return res.status(400).json({ error: 'No image provided' });
     }
@@ -36,7 +101,7 @@ app.post('/api/ocr', async (req, res) => {
           { 
             type: "image_url", 
             image_url: { 
-              url: `data:image/jpeg;base64,${image}`,
+              url:`data:image/jpeg;base64,${image}`,
               detail: "high"
             } 
           }
@@ -45,7 +110,8 @@ app.post('/api/ocr', async (req, res) => {
       max_tokens: 4096
     });
 
-    text = response.choices[0].message.content
+    const text = response.choices[0].message.content
+    drugType = await extractDrugType(text);
     res.json({text});
     const filePath = "./src/data/output";
 
@@ -56,6 +122,13 @@ app.post('/api/ocr', async (req, res) => {
         console.log(`File has been created at: ${filePath}`);
     }
     })
+    fs.writeFile(savedPrescriptionPath, drugType , (err) => {
+      if (err) {
+          console.error("Error writing to file:", err);
+      } else {
+          console.log(`File has been created at: ${savedPrescriptionPath}`);
+      }
+      })
 
 
   } catch (error) {
