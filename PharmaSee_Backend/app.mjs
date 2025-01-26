@@ -44,18 +44,21 @@ app.post('/api/register', async (req, res) => {
 
 });
 
-app.post('/api/login', (req, res) => {
+app.post('/api/login', async (req, res) => {
   const { fullName, password, role } = req.body;
+  console.log("TESTING LOGIN!");
   try {
     // if role set to patient
     if (role === 'patient') {
-      const patient = Patient.findOne({ fullName: fullName});
+      const patient = await Patient.findOne({ fullName: fullName});
       // if patient name not found
       if (!patient) {
+        console.log("PATIENT NOT FOUND");
         return res.status(404).send('Patient not found');
       }
       // if password does not match
       if (patient.password !== password) {
+        console.log("PATIENT INCORRECT PASSWORD");
         return res.status(401).json({message:'Incorrect password', authenticated: false, role: 'patient'});
       }
       // successful login
@@ -65,13 +68,17 @@ app.post('/api/login', (req, res) => {
     }
     // if role set to doctor
     else if (role === 'doctor') {
-      const doctor = Doctor.findOne({ fullName: fullName});
+      console.log(`DOCTOR NAME IS ${fullName}`);
+      const doctor = await Doctor.findOne({ fullName: fullName});
       // if doctor name not found
       if (!doctor) {
+        console.log("DOCTOR NOT FOUND");
         return res.status(404).send('Doctor not found');
       }
       // if password does not match
+      console.log(password);
       if (doctor.password !== password) {
+        console.log("DOCTOR INCORRECT PASSWORD");
         return res.status(401).json({message:'Incorrect password', authenticated: false, role: 'doctor'});
       }
       else {
