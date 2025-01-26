@@ -1,6 +1,5 @@
-import SignUpForm from '../components/SignUpForm'
-import LoginForm from '@/components/LoginForm'
-import PatientDashboard from '@/components/PatientDashboard'
+import SignUpForm from '@/components/SignUpForm'
+
 
 export default function SignUpPage() {
   return (

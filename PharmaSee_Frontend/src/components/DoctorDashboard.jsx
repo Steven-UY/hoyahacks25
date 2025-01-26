@@ -30,7 +30,7 @@ export default function DoctorDashboard() {
       { id: "PAT-003", fullName: "Michael Brown", age: 60 },
       // Add more patients as needed
     ]
-
+    
     // Simulate data fetching
     const fetchData = async () => {
       try {

@@ -6,11 +6,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({
     fullname: "",
     password: "",
+    role: "",
   })
   const [error, setError] = useState("")
   const [success, setSuccess] = useState(false)
@@ -23,13 +25,20 @@ export default function LoginForm() {
     }))
   }
 
+  const handleRoleChange = (value) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      role: value,
+    }))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError("")
     setSuccess(false)
 
     // Basic validation
-    if (!formData.fullname || !formData.password) {
+    if (!formData.fullname || !formData.password || !formData.role) {
       setError("All fields are required")
       return
     }
@@ -42,9 +51,10 @@ export default function LoginForm() {
       setFormData({
         fullname: "",
         password: "",
+        role: "",
       })
     } catch (err) {
-      setError("Invalid fullname or password. Please try again.")
+      setError("Invalid credentials or role. Please try again.")
     }
   }
 
@@ -78,6 +88,18 @@ export default function LoginForm() {
               required
             />
           </div>
+          <div className="space-y-2">
+            <Label htmlFor="role">Role</Label>
+            <Select onValueChange={handleRoleChange} value={formData.role}>
+              <SelectTrigger id="role">
+                <SelectValue placeholder="Select your role" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="patient">Patient</SelectItem>
+                <SelectItem value="doctor">Doctor</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           {error && (
             <Alert variant="destructive">
               <AlertDescription>{error}</AlertDescription>
@@ -85,7 +107,7 @@ export default function LoginForm() {
           )}
           {success && (
             <Alert>
-              <AlertDescription>Login successful! Welcome back!</AlertDescription>
+              <AlertDescription>Login successful! Welcome back, {formData.role}!</AlertDescription>
             </Alert>
           )}
           <Button type="submit" className="w-full">
@@ -104,3 +126,4 @@ export default function LoginForm() {
     </Card>
   )
 }
+
