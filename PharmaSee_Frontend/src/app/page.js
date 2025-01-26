@@ -7,8 +7,6 @@ export default function Home() {
   return (
     <div className="">
       <SignUpForm/>
-      <LoginForm/>
-      <PatientDashboard/>
     </div>
   )
 }

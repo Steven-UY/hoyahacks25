@@ -26,7 +26,7 @@ export default function SignUpForm() {
       [name]: value,
     }))
   }
-
+  
   const handleRoleChange = (value) => {
     setFormData((prevState) => ({
       ...prevState,
