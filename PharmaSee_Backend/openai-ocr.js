@@ -7,7 +7,7 @@ const OpenAI = require('openai');
 const { text } = require('stream/consumers');
 
 const app = express();
-const port = /*process.env.PORT ||*/ 3001;
+const port = /*process.env.PORT ||*/ 6001;
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -31,34 +31,6 @@ function readOutputFile() {
     return null;
   }
 }
-
-// Function to extract the type of drug using OpenAI
-// async function extractDrugType(text) {
-//   const prompt = `Extract the type of drug from the following text:\n\n${text}\n\nDrug type:`;
-//   try {
-//     const response = await openai.chat.completions.create({
-//       model: 'gpt-4',
-//       messages: [{
-//         role: "user",
-//         content: [
-//           { 
-//             type: "text", 
-//             text: prompt 
-//           },
-//           { 
-//             type: "text", 
-
-//           }
-//         ]
-//       }],
-//       max_tokens: 4096
-//     });
-//     return response.choices[0].text.trim();
-//   } catch (err) {
-//     console.error('Error extracting drug type:', err);
-//     return null;
-//   }
-// }
 async function extractDrugType(text) {
   const prompt = `Extract the type of medicine from the following text:\n\n${text}\n\nDrug type:`;
   try {
@@ -112,7 +84,7 @@ app.post('/api/ocr', async (req, res) => {
 
     const text = response.choices[0].message.content
     drugType = await extractDrugType(text);
-    res.json({text});
+    res.json({text, drugType});
     const filePath = "./src/data/output";
 
     fs.writeFile(filePath, text , (err) => {
