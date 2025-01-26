@@ -32,7 +32,7 @@ function readOutputFile() {
   }
 }
 async function extractDrugType(text) {
-  const prompt = `Extract the type of medicine from the following text:\n\n${text}\n\nDrug type:`;
+  const prompt = `Extract the type of medicine from the following text:\n\n${text}\n\n keep nothing other than the medicine name`;
   try {
     const response = await openai.chat.completions.create({
       model: 'gpt-4',
@@ -68,7 +68,7 @@ app.post('/api/ocr', async (req, res) => {
         content: [
           { 
             type: "text", 
-            text: "Extract all text from this image exactly as it appears. Include all formatting, spacing, and special characters. Do not add any commentary or translations." 
+            text: "Extract all text from this image exactly as it appears. Include all formatting, spacing, and special characters. Do not add any commentary. Translate everything to English if in another language" 
           },
           { 
             type: "image_url", 
