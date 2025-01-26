@@ -4,6 +4,10 @@ import openai
 import os
 import json
 from dotenv import load_dotenv
+import openai
+import os
+import json
+from dotenv import load_dotenv
 from flask_cors import CORS  # Add CORS support for cross-origin requests
 
 # Load environment variables
@@ -62,6 +66,7 @@ def get_medicine_description_ch(medicine):
 
 @app.route('/api/save-prescription', methods=['POST'])
 def save_prescription():
+    print("save_prescription endpoint called")  # Debug print statement
     prescription_data = request.json
     medicines = [item['medicine'] for item in prescription_data]
     prescription_file_path = './data/prescription.json'

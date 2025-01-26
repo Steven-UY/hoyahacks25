@@ -6,11 +6,12 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useRouter } from "next/navigation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export default function LoginForm() {
-  const [formData, setFormData] = useState({ fullname: "", password: "", role: "" });
+  const [formData, setFormData] = useState({ fullName: "", password: "", role: "" });
   const [error, setError] = useState("")
   const [success, setSuccess] = useState(false)
   const router = useRouter()
@@ -36,7 +37,7 @@ export default function LoginForm() {
     setSuccess(false)
 
     // Basic validation
-    if (!formData.fullname || !formData.password || !formData.role) {
+    if (!formData.fullName || !formData.password) {
       setError("All fields are required")
       return
     }
@@ -59,10 +60,10 @@ export default function LoginForm() {
       if (data.authorized === false) {
         router.push('/LoginForm');
       }
-      else if (data.authorized === true && data.role === 'patient') {
+      else if (data.authenticated === true && data.role === 'patient') {
         router.push('/PatientDashboard');
       }
-      else if (data.authorized === true && data.role === 'doctor') {
+      else if (data.authenticated === true && data.role === 'doctor') {
         router.push('/DoctorDashboard');
       }
 
@@ -73,7 +74,7 @@ export default function LoginForm() {
       setSuccess(true)
       // Reset form after successful login
       setFormData({
-        fullname: "",
+        fullName: "",
         password: "",
         role: "",
       })
@@ -91,12 +92,12 @@ export default function LoginForm() {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="fullname">Full Name</Label>
+            <Label htmlFor="fullName">Full Name</Label>
             <Input
-              id="fullname"
-              name="fullname"
+              id="fullName"
+              name="fullName"
               type="text"
-              value={formData.fullname}
+              value={formData.fullName}
               onChange={handleChange}
               required
             />
