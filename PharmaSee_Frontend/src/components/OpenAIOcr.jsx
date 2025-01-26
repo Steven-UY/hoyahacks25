@@ -5,6 +5,7 @@ import Webcam from "react-webcam"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Loader2, Camera, CheckCircle, XCircle } from "lucide-react"
+import Link from "next/link" // import Link from next/link
 
 export default function MultiMedicineCheck() {
   const [img, setImg] = useState(null)
@@ -104,11 +105,23 @@ export default function MultiMedicineCheck() {
 
           {isMatch !== null && <PopupCard isCorrect={isMatch} />}
         </CardContent>
-        <CardFooter className="bg-teal-50 rounded-b-lg">
+
+        {/* Footer with two buttons: Back (using Link) & Capture */}
+        <CardFooter className="bg-teal-50 rounded-b-lg flex flex-col gap-2 sm:flex-row sm:justify-between">
+          <Link href="/PatientDashboard" passHref>
+            {/* We wrap the Button with a Link so it navigates on click */}
+            <Button
+              variant="outline"
+              className="w-full sm:w-auto"
+            >
+              Back
+            </Button>
+          </Link>
+
           <Button
             onClick={capture}
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white transition-colors"
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white transition-colors"
           >
             {loading ? (
               <>
