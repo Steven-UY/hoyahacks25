@@ -29,7 +29,7 @@ await mongoose.connect(process.env.MONG_URI)
 // GENERAL ROUTES
 app.post('/api/register', async (req, res) => {
     const formData = req.body;
-
+ 
     // Registers user based on selected role
     if (formData.role === 'patient') {
         const newPatient = new Patient(formData);
@@ -41,7 +41,6 @@ app.post('/api/register', async (req, res) => {
         await newDoctor.save();
         res.status(201).json({ message: 'Doctor registered successfully' });
     }
-
 });
 
 app.post('/api/login', (req, res) => {
@@ -89,7 +88,7 @@ app.post('/api/login', (req, res) => {
 
 // PATIENT ROUTES
 app.get('/api/patientDashboard', (req, res) => {
-
+  
 });
 
 app.get('/api/doctorDashboard', (req, res) => { 
