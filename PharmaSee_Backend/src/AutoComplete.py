@@ -64,36 +64,89 @@ def get_medicine_description_ch(medicine):
     except Exception as e:
         return f"Error fetching description for {medicine}: {str(e)}"
 
+#Spanish
+def get_medicine_description_es(medicine):
+    prompt = f"Explica de manera muy sencilla para un niño qué hace el siguiente medicamento. Hazlo corto y fácil de entender:\n{medicine}:"
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "Eres un asistente médico que proporciona descripciones sencillas de medicamentos en no más de dos oraciones."},
+                {"role": "user", "content": prompt}
+            ]
+        )
+        return response['choices'][0]['message']['content'].strip()
+    except Exception as e:
+        return f"Error fetching description for {medicine}: {str(e)}"
+
 @app.route('/api/save-prescription', methods=['POST'])
 def save_prescription():
     print("save_prescription endpoint called")  # Debug print statement
     prescription_data = request.json
-    medicines = [item['medicine'] for item in prescription_data]
-    prescription_file_path = './data/prescription.json'
-    with open(prescription_file_path, 'w') as f:
-        json.dump(prescription_data, f, indent=2)
+    print("Received prescription data:", prescription_data)  # Debug print statement
 
-    #different languages that may be worked on
-    explanations_en = []
-    #explanations_ch = []
+    # Read existing data from the JSON file
+    prescription_file_path = './data/saved_prescription.json'
+    try:
+        if os.path.exists(prescription_file_path):
+            with open(prescription_file_path, 'w', encoding='utf-8') as f:
+                existing_data = json.load(f)
+        else:
+            existing_data = []
+    except Exception as e:
+        print(f"Error reading existing prescription data: {str(e)}")  # Debug print statement
+        existing_data = []
+
+    # Append new prescription data to existing data
+    existing_data.extend(prescription_data)
+
+    # Save updated prescription data to the JSON file
+    try:
+        with open(prescription_file_path, 'w', encoding='utf-8') as f:
+            json.dump(existing_data, f, indent=2, ensure_ascii=False)
+        print(f"Prescription data saved to {prescription_file_path}")  # Debug print statement
+    except Exception as e:
+        print(f"Error saving prescription data: {str(e)}")  # Debug print statement
+
+    # Extract medicine names
+    medicines = [item['medicine'] for item in prescription_data]
+    print("Extracted medicines:", medicines)  # Debug print statement
+
+    # Generate explanations
+    explanations = []
+    language = 'en'
     for medicine in medicines:
-        explanation_en = get_medicine_description_en(medicine)
-        #explanation_ch = get_medicine_description_ch(medicine)
-        explanations_en.append({"medicine": medicine, "explanation": explanation_en})
-        #explanations_ch.append({"medicine": medicine, "explanation": explanation_ch})
-    explanations_file_path = './data/explanation.json'
-    with open(explanations_file_path, 'w') as f:
-        json.dump(explanations_en, f, indent=2)
-    print("Generated explanations (EN):", explanations_en)  # Debug print statement
-    #print("Generated explanations (CH):", explanations_ch)  # Debug print statement
+        if language == 'en':
+            explanation = get_medicine_description_en(medicine)
+        elif language == 'ch':
+            explanation = get_medicine_description_ch(medicine)
+        elif language == 'es':
+            explanation = get_medicine_description_es(medicine)
+        else:
+            explanation = get_medicine_description_en(medicine)
+
+        explanations.append({"medicine": medicine, "explanation": explanation})
+
+    # Append explanations to the existing data
+    for item in existing_data:
+        for explanation in explanations:
+            if item['medicine'] == explanation['medicine']:
+                item['explanation'] = explanation['explanation']
+
+    # Save updated data with explanations to the JSON file
+    try:
+        with open(prescription_file_path, 'w', encoding='utf-8') as f:
+            json.dump(existing_data, f, ensure_ascii=False, indent=2)
+        print(f"Explanations saved to {prescription_file_path}")  # Debug print statement
+    except Exception as e:
+        print(f"Error saving explanations: {str(e)}")  # Debug print statement
 
     return jsonify({
         "status": "success",
         "message": "Explanations generated successfully",
-        "explanations_en": explanations_en,
-        
+        "explanations_en": explanations,
     })
 
 if __name__ == '__main__':
-    print("Starting Flask server...")  # Debug print statement
+    print("Starting Flask server...") 
     app.run(debug=True, port=5000)

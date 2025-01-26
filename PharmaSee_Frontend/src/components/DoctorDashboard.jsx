@@ -13,7 +13,7 @@ export default function DoctorDashboard() {
 
   useEffect(() => {
     const mockPhysician = {
-      name: "Dr. Sarah Smith",
+      name: "Dr. arah Smith",
       id: "DOC-654321",
     }
 

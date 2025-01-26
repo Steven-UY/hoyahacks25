@@ -103,6 +103,16 @@ export default function Autocomplete() {
       })
       const data = await response.json()
       alert(data.message)
+
+       // Call the generate-explanations endpoint
+    const explanationsResponse = await fetch('http://localhost:5001/api/generate-explanations', {
+      method: 'GET'
+    })
+    const explanationsData = await explanationsResponse.json()
+    console.log("Generated explanations:", explanationsData)
+    alert("Explanations generated successfully")
+
+
     } catch (error) {
       console.error("Error sending JSON:", error)
     }
