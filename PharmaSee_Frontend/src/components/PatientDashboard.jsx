@@ -59,10 +59,12 @@ export default function PatientDashboard() {
         </div>
 
         <div className="flex flex-col gap-2 mt-auto">
-          <Button className="w-full bg-teal-700 text-white hover:bg-teal-800 justify-start">
-            <Scan className="mr-2 h-4 w-4" />
-            Scan
-          </Button>
+          <Link href="/Camera">
+            <Button className="w-full bg-teal-700 text-white hover:bg-teal-800 justify-start">
+              <Scan className="mr-2 h-4 w-4" />
+              Scan
+            </Button>
+          </Link>
           <Button className="w-full bg-red-500 text-white hover:bg-red-600 justify-start">
             <LogOut className="mr-2 h-4 w-4" />
             Logout

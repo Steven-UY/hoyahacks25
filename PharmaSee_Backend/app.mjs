@@ -94,7 +94,7 @@ app.post('/api/login', async (req, res) => {
 });
 
 // PATIENT ROUTES
-app.get('/api/patientDashboard', (req, res) => {
+app.get('/api/patientDashboard/:id', (req, res) => {
   
 });
 
