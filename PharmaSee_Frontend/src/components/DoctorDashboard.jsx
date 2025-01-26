@@ -19,7 +19,7 @@ export default function DoctorDashboard() {
   useEffect(() => {
     // TODO: Replace mockPhysician with actual API call to fetch physician data
     const mockPhysician = {
-      name: "Dr. Sarah Smith",
+      name: "Dr. arah Smith",
       id: "DOC-654321",
     }
 
